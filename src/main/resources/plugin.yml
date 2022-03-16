@@ -1,0 +1,14 @@
+name: HydrogenChairs
+main: net.stouma915.hydrogenchairs.HydrogenChairs
+version: 1.0.0
+api-version: 1.18
+author: stouma915
+
+permissions:
+  hydrogenchairs.*:
+    default: op
+    children:
+      hydrogenchairs.use: true
+  hydrogenchairs.use:
+    description: "Allow using chairs."
+    default: true
