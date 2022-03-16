@@ -24,4 +24,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: hydrogenchairs
-        path: target/build/hydrogenchairs-*.jar
+        path: target/build/HydrogenChairs-*.jar
