@@ -5,6 +5,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import net.stouma915.hydrogenchairs.implicits.*
 import org.bukkit.block.data.`type`.Stairs
+import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.{EventHandler, Listener}
 import org.bukkit.inventory.EquipmentSlot
@@ -24,6 +25,8 @@ class PlayerInteractListener extends Listener {
       return ()
 
     if (event.getHand != EquipmentSlot.HAND)
+      return ()
+    if (event.getAction != Action.RIGHT_CLICK_BLOCK)
       return ()
     if (!event.getClickedBlock.getBlockData.isInstanceOf[Stairs])
       return ()
