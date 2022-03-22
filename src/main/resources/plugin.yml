@@ -1,6 +1,7 @@
 name: HydrogenChairs
 main: net.stouma915.hydrogenchairs.HydrogenChairs
 version: 1.0.0
+description: "PaperMC用椅子プラグイン"
 api-version: 1.18
 author: stouma915
 
