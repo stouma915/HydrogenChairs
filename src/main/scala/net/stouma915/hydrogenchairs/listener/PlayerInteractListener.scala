@@ -7,7 +7,6 @@ import net.stouma915.hydrogenchairs.HydrogenChairs
 import net.stouma915.hydrogenchairs.implicits.*
 import net.stouma915.hydrogenchairs.util.Util
 import org.bukkit.Bukkit
-import org.bukkit.block.BlockFace
 import org.bukkit.block.data.Bisected
 import org.bukkit.block.data.`type`.Stairs
 import org.bukkit.entity.{ArmorStand, EntityType}
