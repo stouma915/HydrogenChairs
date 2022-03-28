@@ -3,12 +3,17 @@ package net.stouma915.hydrogenchairs.listener
 import cats.effect.IO
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
+import net.stouma915.hydrogenchairs.HydrogenChairs
 import net.stouma915.hydrogenchairs.implicits.*
+import org.bukkit.Bukkit
 import org.bukkit.block.data.`type`.Stairs
+import org.bukkit.entity.{ArmorStand, EntityType}
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.{EventHandler, Listener}
 import org.bukkit.inventory.EquipmentSlot
+
+import scala.util.chaining.*
 
 class PlayerInteractListener extends Listener {
 
@@ -68,6 +73,37 @@ class PlayerInteractListener extends Listener {
 
       return program.unsafeRunSync()
     }
+
+    val spawnStandAndRide = for {
+      standLocation <- IO {
+        stairsLocation.clone().add(0.5d, 0.3d, 0.5d)
+      }
+      _ <- IO {
+        Bukkit.getScheduler.scheduleSyncDelayedTask(
+          HydrogenChairs.getInstance.unsafeRunSync(),
+          (() => {
+            val stand = event.getClickedBlock.getWorld
+              .spawnEntity(standLocation, EntityType.ARMOR_STAND)
+              .asInstanceOf[ArmorStand]
+
+            stand
+              .tap(_.setInvulnerable(true))
+              .tap(_.setSmall(true))
+              .tap(_.setGravity(false))
+              .tap(_.setMarker(true))
+              .tap(_.setBasePlate(false))
+              .tap(_.setInvulnerable(true))
+              .tap(_.setPersistent(false))
+
+            stand.addPassenger(event.getPlayer)
+
+            HydrogenChairs.stands += event.getPlayer.getUniqueId -> stand
+          }): Runnable
+        )
+      }
+    } yield ()
+
+    spawnStandAndRide.unsafeRunSync()
   }
 
 }
