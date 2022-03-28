@@ -90,6 +90,8 @@ class PlayerInteractListener extends Listener {
         Bukkit.getScheduler.scheduleSyncDelayedTask(
           HydrogenChairs.getInstance.unsafeRunSync(),
           (() => {
+            event.setCancelled(true)
+
             val stand = event.getClickedBlock.getWorld
               .spawnEntity(standLocation, EntityType.ARMOR_STAND)
               .asInstanceOf[ArmorStand]
