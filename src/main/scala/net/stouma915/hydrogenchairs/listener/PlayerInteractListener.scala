@@ -17,7 +17,7 @@ import org.bukkit.inventory.EquipmentSlot
 
 import scala.util.chaining.*
 
-class PlayerInteractListener extends Listener {
+final class PlayerInteractListener extends Listener {
 
   import cats.effect.unsafe.implicits.global
 
@@ -91,6 +91,9 @@ class PlayerInteractListener extends Listener {
           HydrogenChairs.getInstance.unsafeRunSync(),
           (() => {
             event.setCancelled(true)
+
+            HydrogenChairs.previousLocation += event.getPlayer.getUniqueId -> event.getPlayer.getLocation
+              .clone()
 
             val stand = event.getClickedBlock.getWorld
               .spawnEntity(standLocation, EntityType.ARMOR_STAND)

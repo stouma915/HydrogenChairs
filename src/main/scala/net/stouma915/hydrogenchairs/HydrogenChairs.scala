@@ -2,6 +2,7 @@ package net.stouma915.hydrogenchairs
 
 import cats.effect.IO
 import net.stouma915.hydrogenchairs.listener.*
+import org.bukkit.Location
 import org.bukkit.entity.ArmorStand
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -13,6 +14,7 @@ object HydrogenChairs {
   private var instance: HydrogenChairs = _
 
   private[hydrogenchairs] var stands: Map[UUID, ArmorStand] = Map()
+  private[hydrogenchairs] var previousLocation: Map[UUID, Location] = Map()
 
   def getInstance: IO[HydrogenChairs] = IO(instance)
 
@@ -26,6 +28,7 @@ final class HydrogenChairs extends JavaPlugin {
 
   private val registerListeners = IO {
     Seq(
+      new EntityDismountListener,
       new PlayerInteractListener
     ).foreach(getServer.getPluginManager.registerEvents(_, this))
   }
