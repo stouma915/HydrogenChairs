@@ -5,7 +5,10 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import net.stouma915.hydrogenchairs.HydrogenChairs
 import net.stouma915.hydrogenchairs.implicits.*
+import net.stouma915.hydrogenchairs.util.Util
 import org.bukkit.Bukkit
+import org.bukkit.block.BlockFace
+import org.bukkit.block.data.Bisected
 import org.bukkit.block.data.`type`.Stairs
 import org.bukkit.entity.{ArmorStand, EntityType}
 import org.bukkit.event.block.Action
@@ -35,6 +38,8 @@ class PlayerInteractListener extends Listener {
       return ()
     if (!event.getClickedBlock.getBlockData.isInstanceOf[Stairs])
       return ()
+    if (event.getPlayer.isSneaking)
+      return ()
 
     if (!event.getPlayer.hasPermission("hydrogenchairs.use")) {
       val program = for {
@@ -49,6 +54,10 @@ class PlayerInteractListener extends Listener {
 
       return program.unsafeRunSync()
     }
+
+    val stairs = event.getClickedBlock.getBlockData.asInstanceOf[Stairs]
+    if (stairs.getHalf != Bisected.Half.BOTTOM)
+      return ()
 
     val stairsLocation = event.getClickedBlock.getLocation
     val playerLocation = event.getPlayer.getLocation
@@ -86,13 +95,22 @@ class PlayerInteractListener extends Listener {
               .spawnEntity(standLocation, EntityType.ARMOR_STAND)
               .asInstanceOf[ArmorStand]
 
+            val yaw = Util.getOptimalYaw(stairs)
+
+            stand.setRotation(yaw, 0.0f)
+
+            val newPlayerLocation = event.getPlayer.getLocation.clone()
+            newPlayerLocation.setYaw(yaw)
+            newPlayerLocation.setPitch(0.0f)
+
+            event.getPlayer.teleport(newPlayerLocation)
+
             stand
               .tap(_.setInvulnerable(true))
               .tap(_.setSmall(true))
               .tap(_.setGravity(false))
               .tap(_.setMarker(true))
               .tap(_.setBasePlate(false))
-              .tap(_.setInvulnerable(true))
               .tap(_.setPersistent(false))
 
             stand.addPassenger(event.getPlayer)
