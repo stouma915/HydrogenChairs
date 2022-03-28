@@ -1,6 +1,6 @@
 ThisBuild / version := "1.0.0"
-ThisBuild / scalaVersion := "3.1.1"
 ThisBuild / description := "PaperMC用椅子プラグイン"
+ThisBuild / scalaVersion := "3.1.1"
 
 resolvers ++= Seq(
   "papermc.io" at "https://papermc.io/repo/repository/maven-public/"
