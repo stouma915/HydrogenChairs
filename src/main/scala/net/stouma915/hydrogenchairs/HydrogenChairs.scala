@@ -26,7 +26,7 @@ final class HydrogenChairs extends JavaPlugin {
 
   HydrogenChairs.instance = this
 
-  private val registerListeners = IO {
+  private lazy val registerListeners = IO {
     Seq(
       new EntityDismountListener,
       new PlayerInteractListener
