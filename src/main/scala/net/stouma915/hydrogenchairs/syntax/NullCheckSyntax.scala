@@ -8,7 +8,7 @@ trait NullCheckSyntax {
 
     def nonNull: Boolean = !isNull
 
-    def ifNull(alternative: A): A = if (isNull) alternative else anyRef
+    def ifNull(alternative: => A): A = if (isNull) alternative() else anyRef
 
   }
 
